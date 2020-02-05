@@ -15,6 +15,12 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL + `?ssl=true`,
+    useNullAsDefault: true,
+  },
+
+  test: {
+    client: 'pg',
+    connection: 'postgres://localhost/projects_test',
     migrations: {
       directory: './db/migrations'
     },
