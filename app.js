@@ -14,4 +14,24 @@ app.get('/', (request, response) => {
   response.send('Welcome to Palette Picker!');
 });
 
+//get endpoint for all projects 
+
+//get endpoint for all palettes given a specific project
+
+//get endpoint for one project
+
+//get endpoint for one palette on one project
+
+//post endpoint for a project
+
+//post endpoint for a palette
+
+//put endpoint to update a project name
+
+//put endpoint to update a palette name
+
+//delete endpoint for a project
+
+//delete endpoint for a palette
+
 export default app;
