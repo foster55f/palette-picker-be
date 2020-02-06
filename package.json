@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll",
     "start": "nodemon --exec babel-node server.js"
   },
   "keywords": [],
@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "jest": "^24.9.0",
     "knex": "^0.20.8",
-    "pg": "^7.14.0",
+    "pg": "^7.18.1",
     "supertest": "^4.0.2"
   },
   "devDependencies": {

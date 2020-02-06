@@ -4,7 +4,6 @@ exports.up = function(knex)  {
         .createTable('projects', (table) => {
             table.increments('id').primary();
             table.string('title');
-
             table.timestamps(true, true)
         })
         .createTable('palettes', (table) => {
