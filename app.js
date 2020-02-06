@@ -14,15 +14,15 @@ app.get('/', (request, response) => {
   response.send('Welcome to Palette Picker!');
 });
 
-//get endpoint for all projects 
+//get endpoint for all projects - Foster
 
-//get endpoint for all palettes given a specific project
+//get endpoint for all palettes given a specific project - Foster
 
-//get endpoint for one project
+//get endpoint for one project - Foster
 
-//get endpoint for one palette on one project
+//get endpoint for one palette on one project - Foster
 
-//post endpoint for a project
+//post endpoint for a project 
 
 //post endpoint for a palette
 
