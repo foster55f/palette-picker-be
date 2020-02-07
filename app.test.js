@@ -18,6 +18,22 @@ describe ('Server', () => {
     })
   })
 
+  describe('GET /api/v1/projects', () => {
+    it('should return a 200 and all of the projects', async () => {
+      // setup
+      const expectedProjects = await database('projects').select()
+      const cleanedProjects = JSON.parse(JSON.stringify(expectedProjects))
+  
+      // execution
+      const res = await request(app).get('/api/v1/projects')
+      const projects = res.body
+  
+      // expectation
+      expect(res.status).toBe(200)
+      expect(projects).toEqual(cleanedProjects)
+    })
+  })
+
   describe('POST /api/v1/projects', () => {
     it('should post a new project to the database', async () => {
       const newProject = { id: 1, title: 'Big Pumpkin' };
