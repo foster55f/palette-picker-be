@@ -64,9 +64,26 @@ app.post('/api/v1/projects/:id/palettes', async (request,response) => {
   }
 })
 
-//put endpoint to update a project name
+//patch endpoint to update a project name
 
-//put endpoint to update a palette name
+app.patch('api/v1/projects/:id', async (request, response) => {
+  const newTitle = request.body;
+  const { id } = request.params;
+  const project = await database('projects').where('id', id);
+
+  if(!project.length) {
+    response.status(404).json({ error: 'Project not found.  Please try again.'})
+  }
+
+  try {
+    const updatedTitle = await database('projects').where({ id: id}).update(newTitle, title);
+    response.status(201).json(updatedTitle)
+  } catch (error) {
+    response.status(500).json({ error })
+  }
+})
+
+//patch endpoint to update a palette name
 
 //delete endpoint for a project
 

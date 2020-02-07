@@ -64,4 +64,13 @@ describe ('Server', () => {
     expect(response.body).toEqual({ error: `The expected format is { name: <String>, color1: <String>, color2: <String>, color3: <String>, color4: <String>, color5: <String> }. You're missing a color5 property.`})
   })
 
+  describe('PATCH /api/v1/projects/:id', () => {
+    it('should update the name of a project in the database', async () => {
+      
+
+
+    })
+
+  })
+
 })
