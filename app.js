@@ -19,7 +19,6 @@ app.get('/', (request, response) => {
 app.get('/api/v1/projects', async (request, response) => {
   try {
     const projects = await database('projects').select();
-    console.log(projects)
     response.status(200).json(projects);
   } catch(error) {
     response.status(500).json({ error });
@@ -161,5 +160,17 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
 //delete endpoint for a project
 
 //delete endpoint for a palette
+app.delete('/api/v1/palettes/:name', (request, response) => {
+  const { name } = request.params;
+  database('palettes').where({ name: name })  
+    .del()
+    .then(responseAnswer => {
+      if (!responseAnswer) {
+        return response.status(404).json(`Palette ${name} not found`)
+      }
+      return response.status(200).json(`${name} deleted`)
+  })
+
+})
 
 module.exports = app;
