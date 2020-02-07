@@ -28,6 +28,16 @@ app.get('/api/v1/projects', async (request, response) => {
 
 //get endpoint for all palettes given a specific project - Foster
 
+
+app.get('/api/v1/palettes', async (request, response) => {
+  try {
+    const palettes = await database('palettes').select();
+    response.status(200).json(palettes);
+  } catch(error) {
+    response.status(500).json({ error });
+  }
+});
+
 //get endpoint for one project - Foster
 
 //get endpoint for one palette on one project - Foster
