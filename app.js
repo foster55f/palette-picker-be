@@ -158,6 +158,17 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
 })
 
 //delete endpoint for a project
+app.delete('/api/v1/projects/:id', (request, response) => {
+  const { id } = request.params;
+  database('projects').where({ id: id })
+    .del()
+    .then(responseAnswer => {
+      if (!responseAnswer) {
+        return response.status(404).json(`Project ${id} not found`)
+      }
+      return response.status(200).json(`${id} deleted`)
+    })
+})
 
 //delete endpoint for a palette
 app.delete('/api/v1/palettes/:name', (request, response) => {
