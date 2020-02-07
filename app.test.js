@@ -18,8 +18,6 @@ describe ('Server', () => {
     })
   })
 
-
-
   describe('POST /api/v1/projects', () => {
     it('should post a new project to the database', async () => {
       const newProject = { id: 1, title: 'Big Pumpkin' };
@@ -76,6 +74,7 @@ describe ('Server', () => {
       expect(response.body.title[0].title).toEqual(newTitle.title);
       expect(updatedProject[0].title).toEqual(newTitle.title);
     })
+
     it('should return an error if the project is not found', async () => {
       const newTitle = {title: 'Small Pumpkin'};
       const project = await database('projects').first();
@@ -85,6 +84,36 @@ describe ('Server', () => {
       expect(response.status).toBe(404);
       expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
     })
+  });
+
+  describe('PATCH /api/v1/projects/:id/palettes/:id', () => {
+    it('should update the name of a palette in the database', async () => {
+      const newPaletteName = {name: 'Small Pumpkin Palette'};
+
+      const project = await database('projects').first();
+      const projectId = project.id;
+      const palette = await database('palettes').where('project_id', projectId);
+      const paletteId = palette[0].id;
+
+      
+      const response = await request(app).patch(`/api/v1/projects/${projectId}/palettes/${paletteId}`).send(newPaletteName);
+
+      const updatedPalette = await database('palettes').where('id', paletteId);
+      
+      expect(response.status).toBe(201);
+      expect(response.body.name[0].name).toEqual(newPaletteName.name);
+      expect(updatedPalette[0].name).toEqual(newPaletteName.name);
+    })
+
+    // it('should return an error if the project is not found', async () => {
+    //   const newTitle = {title: 'Small Pumpkin'};
+    //   const project = await database('projects').first();
+    //   const { id } = project;
+    //   const response = await request(app).patch('/api/v1/projects/9999999').send(newTitle);
+
+    //   expect(response.status).toBe(404);
+    //   expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
+    // })
   })
 
 })
