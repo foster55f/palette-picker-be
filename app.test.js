@@ -105,15 +105,15 @@ describe ('Server', () => {
       expect(updatedPalette[0].name).toEqual(newPaletteName.name);
     })
 
-    // it('should return an error if the project is not found', async () => {
-    //   const newTitle = {title: 'Small Pumpkin'};
-    //   const project = await database('projects').first();
-    //   const { id } = project;
-    //   const response = await request(app).patch('/api/v1/projects/9999999').send(newTitle);
+    it('should return an error if the palette is not found', async () => {
+      const newName = {name: 'Small Pumpkin'};
+      const palette = await database('palettes').first();
+      const id = palette.id;
+      const response = await request(app).patch('/api/v1/projects/9999999').send(newName);
 
-    //   expect(response.status).toBe(404);
-    //   expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
-    // })
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
+    })
   })
 
 })
