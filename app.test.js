@@ -69,7 +69,6 @@ describe ('Server', () => {
       const newTitle = {title: 'Small Pumpkin'};
       const project = await database('projects').first();
       const { id } = project;
-      console.log(id);
       const response = await request(app).patch(`/api/v1/projects/${id}`).send(newTitle);
       const updatedProject = await database('projects').where('id', id);
 
@@ -77,7 +76,15 @@ describe ('Server', () => {
       expect(response.body.title[0].title).toEqual(newTitle.title);
       expect(updatedProject[0].title).toEqual(newTitle.title);
     })
+    it('should return an error if the project is not found', async () => {
+      const newTitle = {title: 'Small Pumpkin'};
+      const project = await database('projects').first();
+      const { id } = project;
+      const response = await request(app).patch('/api/v1/projects/9999999').send(newTitle);
 
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
+    })
   })
 
 })
