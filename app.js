@@ -57,6 +57,22 @@ app.get('/api/v1/projects/:id', async (request, response) => {
 
 //get endpoint for one palette on one project - Foster
 
+app.get('/api/v1/palettes/:id', async (request, response) => {
+  const { id } = request.params;
+  database('palettes')
+    .where({ id: id })
+    .then(palette => {
+      if (!palette[0]){
+        response.status(404).json({error:`no palette found with ${id} found`})
+      } else {
+        response.status(200).json(palette[0])
+      }
+    })
+    .catch(error => {
+      response.status(500).json({error})
+  })
+})
+
 //post endpoint for a project 
 app.post('/api/v1/projects', async (request,response) => {
   const project = request.body;
