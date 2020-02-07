@@ -66,9 +66,16 @@ describe ('Server', () => {
 
   describe('PATCH /api/v1/projects/:id', () => {
     it('should update the name of a project in the database', async () => {
-      
+      const newTitle = {title: 'Small Pumpkin'};
+      const project = await database('projects').first();
+      const { id } = project;
+      console.log(id);
+      const response = await request(app).patch(`/api/v1/projects/${id}`).send(newTitle);
+      const updatedProject = await database('projects').where('id', id);
 
-
+      expect(response.status).toBe(201);
+      expect(response.body.title[0].title).toEqual(newTitle.title);
+      expect(updatedProject[0].title).toEqual(newTitle.title);
     })
 
   })
