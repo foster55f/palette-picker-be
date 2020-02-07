@@ -33,4 +33,35 @@ describe ('Server', () => {
     })
   })
 
+  it('should return an error if the incorrect parameters are provided', async () => {
+    const newProject = { };
+    const response = await request(app).post('/api/v1/projects').send(newProject);
+    
+    expect(response.status).toBe(422);
+    expect(response.body).toEqual({ error: `The expected format is { title: <String> }. You're missing a title property.`})
+  });
+
+  describe('POST /api/v1/projects/:id/palettes', () => {
+    it('should post a new palette to the database', async () => {
+      const project = await database('projects').first();
+      const { id } = project.id;
+      const newPalette = { id: 1, name: 'Ah-ranges',  color1: '#000000', color2: '#000000', color3: '#000000', color4: '#000000', color5: '#000000', project_id: id };
+
+      const response = await request(app).post(`/api/v1/projects/${id}/palettes`).send(newPalette);
+      const palettes = await database('palettes').where('id', response.body.id[0]);
+      const palette = palettes[0];
+
+      expect(response.status).toBe(201);
+      expect(palette.name).toEqual(newPalette.name)
+    })
+  })
+
+  it('should return an error if the incorrect parameters are provided', async () => {
+    const newPalette = { name: 'Brown Eyed Girl', color1: '#000000', color2: '#000000', color3: '#000000', color4: '#000000' };
+    const response = await request(app).post('/api/v1/projects/:id/palettes').send(newPalette);
+    
+    expect(response.status).toBe(422);
+    expect(response.body).toEqual({ error: `The expected format is { name: <String>, color1: <String>, color2: <String>, color3: <String>, color4: <String>, color5: <String> }. You're missing a color5 property.`})
+  })
+
 })

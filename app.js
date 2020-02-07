@@ -42,8 +42,27 @@ app.post('/api/v1/projects', async (request,response) => {
   }
 })
 
-
 //post endpoint for a palette
+
+app.post('/api/v1/projects/:id/palettes', async (request,response) => {
+  const palette = request.body;
+  const { id } = request.params;
+
+  for (let requiredParameter of ['name', 'color1', 'color2', 'color3', 'color4', 'color5']) {
+    if (!palette.hasOwnProperty(requiredParameter)) {
+      return response 
+        .status(422)
+        .send({ error: `The expected format is { name: <String>, color1: <String>, color2: <String>, color3: <String>, color4: <String>, color5: <String> }. You're missing a ${requiredParameter} property.`})
+    }
+  }
+
+  try {
+    const id = await database('palettes').insert(palette, 'id');
+    response.status(201).json({ id })
+  } catch (error) {
+    response.status(500).json({ error })
+  }
+})
 
 //put endpoint to update a project name
 
