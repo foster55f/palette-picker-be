@@ -34,45 +34,27 @@ app.get('/api/v1/projects/:id/palettes', async (request, response) => {
   }
 });
 
-
-
-
-
-
-
-//get endpoint for one project - Foster
 app.get('/api/v1/projects/:id', async (request, response) => {
-  const { id } = request.params;
-  database('projects')
-    .where({ id: id })
-    .then(project => {
-      if (!project[0]){
-        response.status(404).json({error:`no project found with ${id} found`})
-      } else {
-        response.status(200).json(project[0])
-      }
-    })
-    .catch(error => {
-      response.status(500).json({error})
-  })
+  try {
+    const { id } = request.params;
+    const project = await database('projects').where('id', id);
+  
+    project.length ? response.status(200).json(project[0]) : response.status(404).json({error:`no project found with ${id} found`});
+  } catch (error) {
+    response.status(500).json({ error })
+  }
 })
 
 //get endpoint for one palette on one project - Foster
-
-app.get('/api/v1/palettes/:id', async (request, response) => {
-  const { id } = request.params;
-  database('palettes')
-    .where({ id: id })
-    .then(palette => {
-      if (!palette[0]){
-        response.status(404).json({error:`no palette found with ${id} found`})
-      } else {
-        response.status(200).json(palette[0])
-      }
-    })
-    .catch(error => {
-      response.status(500).json({error})
-  })
+app.get('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
+  try {
+    const { paletteId } = request.params;
+    const palette = await database('palettes').where('id', paletteId);
+    
+    palette ? response.status(200).json(palette[0]) : response.status(404).json({error:`no palette found with ${paletteId} found`})
+  } catch(error) {
+    response.status(500).json({error})
+  }
 })
 
 //post endpoint for a project 

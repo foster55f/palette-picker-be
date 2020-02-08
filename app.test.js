@@ -45,7 +45,7 @@ describe ('Server', () => {
     })
 
     it('should return an error if there is no matching project', async () => {
-      const id = 999999;
+      const id = -999999;
       const expectedPalettes = await database('palettes').where('project_id', id);
       const res = await request(app).get(`/api/v1/projects/${id}/palettes`);
       const palettes = res.body;
@@ -71,7 +71,18 @@ describe ('Server', () => {
       expect(response.status).toBe(404);
       expect(response.body).toEqual({error:`no project found with ${id} found`});
     })
+  })
 
+  describe('GET /api/v1/projects/:id/palettes/:id', () => {
+    it('should return a palette given a specific id', async () => {
+      const palette = await database('palettes').first();
+      const projectId = palette.project_id;
+      const paletteId = palette.id;
+      const response = await request(app).get(`/api/v1/projects/${projectId}/palettes/${paletteId}`);
+      
+      expect(response.status).toBe(200);
+      expect(response.body.name).toEqual(palette.name);
+    })
   })
 
 
