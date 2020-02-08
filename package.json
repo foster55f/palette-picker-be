@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watchAll",
-    "start": "nodemon --exec babel-node server.js"
+    "start": "node server.js",
+    "test" : "jest --forceExit",
+    "test:watch": "jest --watchAll"
+  },
+  "engines": {
+    "node": "12.5.0"
   },
   "keywords": [],
   "author": "",
