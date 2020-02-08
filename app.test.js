@@ -34,17 +34,17 @@ describe ('Server', () => {
 
   describe('GET /api/v1/projects/:id/palettes', () => {
     it('should return a 200 and all of the palettes', async () => {
-      // setup
-      const expectedPalettes = await database('palettes').select()
+      const project = await database('projects').first();
+      const id = project.id;
+
+      const expectedPalettes = await database('palettes').where('project_id', id);
       const cleanedPalettes = JSON.parse(JSON.stringify(expectedPalettes))
   
-      // execution
-      const res = await request(app).get('/api/v1/palettes')
-      const projects = res.body
+      const res = await request(app).get(`/api/v1/projects/${id}/palettes`)
+      const palettes = res.body
   
-      // expectation
       expect(res.status).toBe(200)
-      expect(projects).toEqual(cleanedPalettes)
+      expect(palettes).toEqual(cleanedPalettes[0])
     })
   })
 

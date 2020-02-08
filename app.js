@@ -14,8 +14,6 @@ app.get('/', (request, response) => {
   response.send('Welcome to Palette Picker!');
 });
 
-//get endpoint for all projects - Foster
-
 app.get('/api/v1/projects', async (request, response) => {
   try {
     const projects = await database('projects').select();
@@ -27,15 +25,22 @@ app.get('/api/v1/projects', async (request, response) => {
 
 //get endpoint for all palettes given a specific project - Foster
 
-
-app.get('/api/v1/palettes', async (request, response) => {
+app.get('/api/v1/projects/:id/palettes', async (request, response) => {
   try {
-    const palettes = await database('palettes').select();
-    response.status(200).json(palettes);
+    const { id } = request.params;
+    const palettes = await database('palettes').where('project_id', id);
+
+    palettes.length ? response.status(200).json(palettes[0]) : response.status(404).json({ error: `Could not find project with id of ${id}. Please try again.`})
   } catch(error) {
     response.status(500).json({ error });
   }
 });
+
+
+
+
+
+
 
 //get endpoint for one project - Foster
 app.get('/api/v1/projects/:id', async (request, response) => {
