@@ -23,8 +23,6 @@ app.get('/api/v1/projects', async (request, response) => {
   }
 });
 
-//get endpoint for all palettes given a specific project - Foster
-
 app.get('/api/v1/projects/:id/palettes', async (request, response) => {
   try {
     const { id } = request.params;

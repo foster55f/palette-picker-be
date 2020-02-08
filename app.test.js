@@ -35,16 +35,15 @@ describe ('Server', () => {
     it('should return a 200 and all of the palettes', async () => {
       const project = await database('projects').first();
       const id = project.id;
-
       const expectedPalettes = await database('palettes').where('project_id', id);
       const cleanedPalettes = JSON.parse(JSON.stringify(expectedPalettes))
-  
       const res = await request(app).get(`/api/v1/projects/${id}/palettes`)
       const palettes = res.body
   
       expect(res.status).toBe(200)
       expect(palettes).toEqual(cleanedPalettes[0])
     })
+
     it('should return an error if there is no matching project', async () => {
       const id = 999999;
       const expectedPalettes = await database('palettes').where('project_id', id);
@@ -52,6 +51,25 @@ describe ('Server', () => {
       const palettes = res.body;
   
       expect(res.status).toBe(404)
+    })
+  })
+
+  describe('GET /api/v1/projects/:id', () => {
+    it('should return a project given a specific id' , async () => {
+      const project = await database('projects').first();
+      const id = project.id;
+      const response = await request(app).get(`/api/v1/projects/${id}`);
+      const returnedProjectId = response.body.id;
+
+      expect(response.status).toBe(200);
+      expect(returnedProjectId).toEqual(project.id)
+    })
+    it('should return an error if no project can be found with that id', async() => {
+      const id = -283402;
+      const response = await request(app).get(`/api/v1/projects/${id}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({error:`no project found with ${id} found`});
     })
 
   })
