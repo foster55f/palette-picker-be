@@ -29,7 +29,6 @@ describe ('Server', () => {
       expect(res.status).toBe(200)
       expect(projects).toEqual(cleanedProjects)
     })
-
   })
 
   describe('GET /api/v1/projects/:id/palettes', () => {
@@ -46,6 +45,15 @@ describe ('Server', () => {
       expect(res.status).toBe(200)
       expect(palettes).toEqual(cleanedPalettes[0])
     })
+    it('should return an error if there is no matching project', async () => {
+      const id = 999999;
+      const expectedPalettes = await database('palettes').where('project_id', id);
+      const res = await request(app).get(`/api/v1/projects/${id}/palettes`);
+      const palettes = res.body;
+  
+      expect(res.status).toBe(404)
+    })
+
   })
 
 
