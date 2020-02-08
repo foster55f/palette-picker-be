@@ -189,11 +189,43 @@ describe ('Server', () => {
       const id = project.id;
       const response = await request(app).delete(`/api/v1/projects/${id}`).send(`${id}`);
       const noProject = await database('projects').where('id', id);
-      // console.log(response.body);
 
       expect(response.status).toBe(204);
       expect(noProject.length).toEqual(0);
-      // expect(response.body).toEqual(`Project ${id} has been successfully deleted.`)
+    })
+
+    it('should give an error message when the project cannot be found', async () => {
+      const project = await database('projects').first();
+      const id = -5;
+      const response = await request(app).delete(`/api/v1/projects/${id}`).send(`${id}`);
+
+      expect(response.status).toBe(404)
+      expect(response.body).toEqual({ error: `Could not find project ${id}. Please try again.`})
+    })
+  })
+
+  describe('DELETE /api/v1/projects/:id/palettes/:id', () => {
+    it('should delete a palette given a specific id number', async () => {
+      const project = await database('projects').first();
+      const projectId = project.id;
+      const palette = await database('palettes').first();
+      const paletteId = palette.id;
+      const response = await request(app).delete(`/api/v1/projects/${projectId}/palettes/${paletteId}`).send(`${paletteId}`);
+      const noPalette = await database('palettes').where('id', paletteId);
+
+      expect(response.status).toBe(204);
+      expect(noPalette.length).toEqual(0);
+    })
+
+    it('should return an error message if the palette id cannot be found', async () => {
+      const project = await database('projects').first();
+      const projectId = project.id;
+      const palette = await database('palettes').first();
+      const id = -11111;
+      const response = await request(app).delete(`/api/v1/projects/${projectId}/palettes/${id}`).send(`${id}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ error: `Could not find palette ${id}. Please try again.`});
     })
   })
 

@@ -151,16 +151,22 @@ app.delete('/api/v1/projects/:id', async (request, response) => {
 })
 
 //delete endpoint for a project
-app.delete('/api/v1/projects/:id', (request, response) => {
-  const { id } = request.params;
-  database('projects').where({ id: id })
-    .del()
-    .then(responseAnswer => {
-      if (!responseAnswer) {
-        return response.status(404).json(`Project ${id} not found`)
-      }
-      return response.status(204).json(`${id} deleted`)
-    })
+app.delete('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
+  const { paletteId } = request.params;
+  
+  try {
+    const palette = await database('palettes').where('id', paletteId);
+    if (palette.length) {
+      await database('palettes').where('id', paletteId).del();
+      response.status(204).send(`Palette ${paletteId} has been successfully deleted.`)
+    } else {
+      response.status(404).json({ error: `Could not find palette ${paletteId}. Please try again.`})
+    }
+  } catch (error) {
+    response.status(500).json({ error })
+  }
 })
+  
+
 
 module.exports = app;
