@@ -85,7 +85,6 @@ describe ('Server', () => {
     })
   })
 
-
   describe('POST /api/v1/projects', () => {
     it('should post a new project to the database', async () => {
       const newProject = { id: 1, title: 'Big Pumpkin' };
@@ -181,6 +180,20 @@ describe ('Server', () => {
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual({error: 'Project not found.  Please try again.'})
+    })
+  })
+
+  describe('DELETE /api/v1/projects/:id', () => {
+    it('should delete a project given a specific id number', async () => {
+      const project = await database('projects').first();
+      const id = project.id;
+      const response = await request(app).delete(`/api/v1/projects/${id}`).send(`${id}`);
+      const noProject = await database('projects').where('id', id);
+      // console.log(response.body);
+
+      expect(response.status).toBe(204);
+      expect(noProject.length).toEqual(0);
+      // expect(response.body).toEqual(`Project ${id} has been successfully deleted.`)
     })
   })
 
