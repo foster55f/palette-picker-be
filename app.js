@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration)
@@ -116,9 +115,7 @@ app.patch('/api/v1/projects/:projectId', async (request, response) => {
 
 app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
   const newPaletteName = request.body.name;
-  // const { projectId } = request.params;
   const { paletteId } = request.params;
-  
   const palette = await database('palettes').where('id', paletteId);
 
   if(!palette.length) {
@@ -132,8 +129,6 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
   }
 })
 
-
-//delete endpoint for a project
 app.delete('/api/v1/projects/:id', async (request, response) => {
   const id = request.params.id;
   try {
@@ -150,7 +145,6 @@ app.delete('/api/v1/projects/:id', async (request, response) => {
   }
 })
 
-//delete endpoint for a project
 app.delete('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
   const { paletteId } = request.params;
   
@@ -167,6 +161,4 @@ app.delete('/api/v1/projects/:projectId/palettes/:paletteId', async (request, re
   }
 })
   
-
-
 module.exports = app;

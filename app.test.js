@@ -22,7 +22,6 @@ describe ('Server', () => {
     it('should return a 200 and all of the projects', async () => {
       const expectedProjects = await database('projects').select()
       const cleanedProjects = JSON.parse(JSON.stringify(expectedProjects))
-  
       const res = await request(app).get('/api/v1/projects')
       const projects = res.body
   
@@ -88,7 +87,6 @@ describe ('Server', () => {
   describe('POST /api/v1/projects', () => {
     it('should post a new project to the database', async () => {
       const newProject = { id: 1, title: 'Big Pumpkin' };
-
       const response = await request(app).post('/api/v1/projects').send(newProject)
       const projects = await database('projects').where('id', response.body.id[0]);
       const project = projects[0];
@@ -111,7 +109,6 @@ describe ('Server', () => {
       const project = await database('projects').first();
       const { id } = project.id;
       const newPalette = { id: 1, name: 'Ah-ranges',  color1: '#000000', color2: '#000000', color3: '#000000', color4: '#000000', color5: '#000000', project_id: id };
-
       const response = await request(app).post(`/api/v1/projects/${id}/palettes`).send(newPalette);
       const palettes = await database('palettes').where('id', response.body.id[0]);
       const palette = palettes[0];
@@ -156,15 +153,11 @@ describe ('Server', () => {
   describe('PATCH /api/v1/projects/:id/palettes/:id', () => {
     it('should update the name of a palette in the database', async () => {
       const newPaletteName = {name: 'Small Pumpkin Palette'};
-
       const project = await database('projects').first();
       const projectId = project.id;
       const palette = await database('palettes').where('project_id', projectId);
       const paletteId = palette[0].id;
-
-      
       const response = await request(app).patch(`/api/v1/projects/${projectId}/palettes/${paletteId}`).send(newPaletteName);
-
       const updatedPalette = await database('palettes').where('id', paletteId);
       
       expect(response.status).toBe(201);
@@ -228,5 +221,4 @@ describe ('Server', () => {
       expect(response.body).toEqual({ error: `Could not find palette ${id}. Please try again.`});
     })
   })
-
 })
