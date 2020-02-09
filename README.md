@@ -236,6 +236,6 @@ PATCH path:'/api/v1/projects/:projectId/palettes/:paletteId'
 - Body needs to hold the part of the Palette to update
 - Sample Response (ok) status: 201 with message
 ```js
-{ newName: <name of paleette> }
+{ newName: <name of palette> }
 ```
 </details>
