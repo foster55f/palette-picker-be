@@ -8,7 +8,7 @@ GET path:`/api/v1/projects`
 - Will return an array of all projects, each as an object.
 - Each object will contain the following:
 ```js
-{
+[{
 		id: 1,
 		title: 'Foster',
 		  palettes: [{
@@ -42,7 +42,42 @@ GET path:`/api/v1/projects`
             color5:'#B1B6A6',
             project_id: 1
             }]
-	}
+    },
+    {
+		id: 2,
+		title: 'fruits',
+		  palettes: [{
+            id: 30,
+            name: 'apple colors',
+            color1: '#F7C59F',
+            color2: '#2A324B',
+            color3: '#767B93',
+            color4: '#C7CCDG',
+            color5: '#E1E5EE',
+            project_id: 2
+        },
+        {
+            id: 25,
+            name: 'orange colors',
+            color1: '#57739',
+            color2: '#BDD5E2',
+            color3: '#F7F7FF',
+            color4: '#FE5F53',
+            color5: '#495864',
+            project_id: 2
+
+        },
+        {
+            id: 28,
+            name:'grape colors',
+            color1:'#000000',
+            color2:'#363945',
+            color3:'#696772',
+            color4:'#819591',
+            color5:'#B1B6A6',
+            project_id: 2
+            }]
+	}]
 ```
 - `Sample Response (error) status: 500`
 ```js
