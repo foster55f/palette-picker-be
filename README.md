@@ -148,7 +148,7 @@ GET path:`/api/v1/projects/:projectId/palettes/:paletteId`
 
 ##### 1. Create a Project
 POST path:`/api/v1/projects`
-This Post requires title, email and password. Logic is built in to verify a title is included.
+This Post requires title. Logic is built in to verify a title is included.
 Format of POST body:
 ```js
 {
@@ -167,7 +167,7 @@ Format of POST body:
 			}
 ```
 
-##### 2. Login a User
+##### 2. Create a palette for a specific project
 POST path:`/api/v1/projects/:id/palettes`
 This Post requires name of palette and 5 colors . Logic is built in to verify name and 5 colors.
 Format of POST body:
