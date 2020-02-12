@@ -14,8 +14,6 @@ app.get('/', (request, response) => {
 });
 
 app.get('/api/v1/projects', async (request, response) => {
-  console.log('hiii')
-
   try {
     const projects = await database('projects').select();
     response.status(200).json(projects);

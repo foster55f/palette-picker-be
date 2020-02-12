@@ -38,7 +38,7 @@ describe ('Server', () => {
       const cleanedPalettes = JSON.parse(JSON.stringify(expectedPalettes))
       const res = await request(app).get(`/api/v1/projects/${id}/palettes`)
       const palettes = res.body
-  
+      console.log(palettes)
       expect(res.status).toBe(200)
       expect(palettes).toEqual(cleanedPalettes[0])
     })
