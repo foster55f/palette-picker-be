@@ -14,11 +14,13 @@ app.get('/', (request, response) => {
 });
 
 app.get('/api/v1/projects', async (request, response) => {
+  console.log('hiii')
+
   try {
     const projects = await database('projects').select();
     response.status(200).json(projects);
   } catch(error) {
-    response.status(500).json({ error });
+    response.status(500).json({ error:`Could not find projects` });
   }
 });
 
@@ -26,8 +28,7 @@ app.get('/api/v1/projects/:id/palettes', async (request, response) => {
   try {
     const { id } = request.params;
     const palettes = await database('palettes').where('project_id', id);
-
-    palettes.length ? response.status(200).json(palettes[0]) : response.status(404).json({ error: `Could not find project with id of ${id}. Please try again.`})
+    palettes.length ? response.status(200).json(palettes) : response.status(404).json({ error: `Could not find project with id of ${id}. Please try again.`})
   } catch(error) {
     response.status(500).json({ error });
   }
@@ -55,7 +56,7 @@ app.get('/api/v1/projects/:projectId/palettes/:paletteId', async (request, respo
   }
 })
 
-app.post('/api/v1/projects', async (request,response) => {
+app.post('/api/v1/projects', async (request, response) => {
   const project = request.body;
 
   for (let requiredParameter of ['title']) {
@@ -74,7 +75,7 @@ app.post('/api/v1/projects', async (request,response) => {
   }
 })
 
-app.post('/api/v1/projects/:id/palettes', async (request,response) => {
+app.post('/api/v1/projects/:id/palettes', async (request, response) => {
   const palette = request.body;
   const { id } = request.params;
 
@@ -118,47 +119,47 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
   const { paletteId } = request.params;
   const palette = await database('palettes').where('id', paletteId);
 
-  if(!palette.length) {
-    response.status(404).json({ error: 'Palette not found.  Please try again.'})
-  }
-  try {
-    const updatedName = await database('palettes').where('id', paletteId).update({name: newPaletteName}, ['id', 'name']);
-    response.status(201).json({ name: updatedName })
-  } catch (error) {
-    response.status(500).json({ error })
-  }
-})
-
-app.delete('/api/v1/projects/:id', async (request, response) => {
-  const id = request.params.id;
-  try {
-    const project = await database('projects').where('id', id);
-    if (project.length) {
-      await database('palettes').where('project_id', id).del();
-      await database('projects').where('id', id).del();
-      response.status(204).send(`Project ${id} has been successfully deleted.`)
-    } else {
-      response.status(404).json({ error: `Could not find project ${id}. Please try again.`})
+  if (!palette.length) {
+    response.status(404).json({ error: 'Palette not found.  Please try again.' })
+    try {
+      const updatedName = await database('palettes').where('id', paletteId).update({ name: newPaletteName }, ['id', 'name']);
+      response.status(201).json({ name: updatedName })
+    } catch (error) {
+      response.status(500).json({ error })
     }
-  } catch (error) {
-    response.status(500).json({ error })
   }
-})
 
-app.delete('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
-  const { paletteId } = request.params;
-  
-  try {
-    const palette = await database('palettes').where('id', paletteId);
-    if (palette.length) {
-      await database('palettes').where('id', paletteId).del();
-      response.status(204).send(`Palette ${paletteId} has been successfully deleted.`)
-    } else {
-      response.status(404).json({ error: `Could not find palette ${paletteId}. Please try again.`})
+  app.delete('/api/v1/projects/:id', async (request, response) => {
+    const id = request.params.id;
+    try {
+      const project = await database('projects').where('id', id);
+      if (project.length) {
+        await database('palettes').where('project_id', id).del();
+        await database('projects').where('id', id).del();
+        response.status(204).send(`Project ${id} has been successfully deleted.`)
+      } else {
+        response.status(404).json({ error: `Could not find project ${id}. Please try again.` })
+      }
+    } catch (error) {
+      response.status(500).json({ error })
     }
-  } catch (error) {
-    response.status(500).json({ error })
-  }
+  })
+
+  app.delete('/api/v1/projects/:projectId/palettes/:paletteId', async (request, response) => {
+    const { paletteId } = request.params;
+  
+    try {
+      const palette = await database('palettes').where('id', paletteId);
+      if (palette.length) {
+        await database('palettes').where('id', paletteId).del();
+        response.status(204).send(`Palette ${paletteId} has been successfully deleted.`)
+      } else {
+        response.status(404).json({ error: `Could not find palette ${paletteId}. Please try again.` })
+      }
+    } catch (error) {
+      response.status(500).json({ error })
+    }
+  })
 })
   
-module.exports = app;
+  module.exports = app;
