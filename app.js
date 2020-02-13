@@ -126,7 +126,7 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
       response.status(500).json({ error })
     }
   }
-
+})
   app.delete('/api/v1/projects/:id', async (request, response) => {
     const id = request.params.id;
     try {
@@ -159,6 +159,6 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
       response.status(500).json({ error })
     }
   })
-})
+
   
   module.exports = app;
