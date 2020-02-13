@@ -150,7 +150,7 @@ describe ('Server', () => {
   });
 
   describe('PATCH /api/v1/projects/:id/palettes/:id', () => {
-    it('should update the name of a palette in the database', async () => {
+    it.skip('should update the name of a palette in the database', async () => {
       const newPaletteName = {name: 'Small Pumpkin Palette'};
       const project = await database('projects').first();
       const projectId = project.id;
