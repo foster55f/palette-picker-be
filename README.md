@@ -1,3 +1,21 @@
+# Palette Picker BE
+
+By:
+[Foster Taylor](https://github.com/foster55f) & [Trisha Langlois](https://github.com/trishalanglois)
+
+## [Production Site](https://mysterious-dusk-17585.herokuapp.com/)
+
+## Project Management Board
+[Link to Project Management Board](https://trello.com/b/5k1vY2qi/palette-picker)
+
+## Table of Contents
+
+* GET Endpoints
+* POST Endpoints
+* DELETE Endpoints
+* PATCH Endpoints
+
+
 ## End Points
 <details>
   <summary> <code>GET</code> endpoints </summary>
