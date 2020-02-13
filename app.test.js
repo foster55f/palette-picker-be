@@ -38,9 +38,8 @@ describe ('Server', () => {
       const cleanedPalettes = JSON.parse(JSON.stringify(expectedPalettes))
       const res = await request(app).get(`/api/v1/projects/${id}/palettes`)
       const palettes = res.body
-      console.log(palettes)
       expect(res.status).toBe(200)
-      expect(palettes).toEqual(cleanedPalettes[0])
+      expect(palettes[0]).toEqual(cleanedPalettes[0])
     })
 
     it('should return an error if there is no matching project', async () => {

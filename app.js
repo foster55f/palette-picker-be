@@ -131,7 +131,8 @@ app.patch('/api/v1/projects/:projectId/palettes/:paletteId', async (request, res
     const id = request.params.id;
     try {
       const project = await database('projects').where('id', id);
-      if (project.length) {
+     
+      if (project.length > 0) {
         await database('palettes').where('project_id', id).del();
         await database('projects').where('id', id).del();
         response.status(204).send(`Project ${id} has been successfully deleted.`)
